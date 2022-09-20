@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+}
+
+group 'com.dioextreme.nully'
+version '0.1'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("net.dv8tion:JDA:5.0.0-alpha.19") {
+        exclude module: 'opus-java'
+    }
+    implementation("org.postgresql:postgresql:42.5.0")
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("org.quartz-scheduler:quartz:2.3.2")
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes 'Main-Class': 'com.dioextreme.nully.Nully'
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task dockerImage(type: Copy, dependsOn: jar) {
+    def jarName= "${rootProject.name}-${version}"
+    def dockerImageName = "${rootProject.name}"
+    from "build/libs/${jarName}.jar"
+    into "docker/nully/"
+    doLast {
+        exec {
+            workingDir "docker/nully/"
+            commandLine 'docker', 'build', '.', '--build-arg', 'JAR_FILE=' + jarName + '.jar', '-t', dockerImageName
+        }
+    }
+}
+
+task dockerRun(type: Exec, dependsOn: dockerImage) {
+    workingDir "docker/nully/"
+    commandLine 'docker', 'compose', 'up', '-d'
+}
+

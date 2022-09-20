@@ -1,0 +1,32 @@
+services:
+  nully:
+    restart: always
+    image: nully
+    environment:
+      NULLY_BOT_TOKEN: /run/secrets/nully_bot_token
+      NULLY_BOT_SHARD_ID: 0
+      NULLY_DB_HOST: /run/secrets/nully_db_host
+      NULLY_DB_USERNAME: /run/secrets/nully_db_username
+      NULLY_DB_PASSWORD: /run/secrets/nully_db_password
+      NULLY_DB_DATABASE: /run/secrets/nully_db_database
+      NULLY_DB_NAME: nully
+      NULLY_DB_SCHEMA: nully
+
+    secrets:
+      - nully_bot_token
+      - nully_db_host
+      - nully_db_username
+      - nully_db_password
+      - nully_db_database
+
+secrets:
+  nully_bot_token:
+    file: nully_bot_token.txt
+  nully_db_host:
+    file: nully_db_host.txt
+  nully_db_username:
+    file: nully_db_username.txt
+  nully_db_password:
+    file: nully_db_password.txt
+  nully_db_database:
+    file: nully_db_database.txt

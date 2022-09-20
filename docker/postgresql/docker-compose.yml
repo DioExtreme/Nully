@@ -1,0 +1,28 @@
+services:
+  db:
+    restart: always
+    stop_grace_period: 2m
+    image: postgresql
+    volumes:
+      - nully-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/nully_db_username
+      POSTGRES_PASSWORD_FILE: /run/secrets/nully_db_password
+      POSTGRES_DB_FILE: /run/secrets/nully_db_database
+    secrets:
+      - nully_db_username
+      - nully_db_password
+      - nully_db_database
+    ports:
+      - "5432:5432"
+
+secrets:
+  nully_db_username:
+    file: nully_db_username.txt
+  nully_db_password:
+    file: nully_db_password.txt
+  nully_db_database:
+    file: nully_db_database.txt
+
+volumes:
+  nully-db-data:
