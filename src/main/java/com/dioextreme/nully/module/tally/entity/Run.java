@@ -65,7 +65,7 @@ public class Run
         Map<Long, Integer> conditionalPointsAwarded = new HashMap<>();
         int authorPoints = activeMode.getOption(ModeOptionType.AUTHOR);
 
-        if (authorPoints != 2)
+        if (authorPoints != 1)
         {
             conditionalPointsAwarded.put(authorId, authorPoints);
         }
