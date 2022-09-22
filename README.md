@@ -22,5 +22,5 @@ Java 17 is used for the project, lower versions untested.
 -- Work in Progress --
 
 ## License
-See the LICENSE.txt file.
+See the LICENSE file.
 
