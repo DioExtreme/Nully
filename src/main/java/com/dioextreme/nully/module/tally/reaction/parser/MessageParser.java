@@ -102,8 +102,8 @@ public class MessageParser
                     else if (toonCount > 1)
                     {
                         multiRunners.put(memberId, toonCount);
-                        toonCount = 0;
                     }
+                    toonCount = 0;
                 }
             }
             else if (toonCount == valueBeforeFirstRunnerFound)
