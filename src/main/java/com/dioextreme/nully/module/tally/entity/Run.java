@@ -75,7 +75,15 @@ public class Run
         {
             MessageParser messageParser = new MessageParser();
             Map<Long, Integer> multiRunners = messageParser.parseMultiRunners(messageContent);
-            conditionalPointsAwarded.putAll(multiRunners);
+
+            multiRunners.forEach((memberId, pointsAwarded) ->
+            {
+                if (pointsAwarded > multiRunnerPoints)
+                {
+                    pointsAwarded = multiRunnerPoints;
+                }
+                conditionalPointsAwarded.put(memberId, pointsAwarded);
+            });
         }
 
         int defaultPoints = activeMode.getOption(ModeOptionType.NORMAL);
